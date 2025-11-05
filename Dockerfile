@@ -16,8 +16,6 @@ WORKDIR /app
 
 COPY pyproject.toml README.md /app/
 COPY src/ /app/src/
-# Include your *checked-in* tiny sample
-COPY data/ /app/data/
 
 RUN python -m pip install --upgrade pip && \
     pip install -e .
@@ -26,5 +24,5 @@ RUN python -m pip install --upgrade pip && \
 RUN useradd -m -u 1000 appuser
 USER appuser
 
-ENTRYPOINT ["python", "-m", "myproj.train"]
+ENTRYPOINT ["python", "-m", "train"]
 

@@ -43,15 +43,16 @@ def build_ctx() -> Dict[str, Any]:
         "rows": getenv("ROWS", 256, int),
         "test_size": getenv("TEST_SIZE", 0.2, float),
         "seed": getenv("SEED", 123, int),
-        "data_path": os.getenv("DATA_PATH", "myproj/data/smoke_sample.parquet"),
+        # Optional override; pipeline has its own module-relative default
+        "data_path": os.getenv("DATA_PATH", ""),
     }
 
 def main():
     seed_and_threads()
     ctx = build_ctx()
 
-    pl = import_symbol(f"myproj.pipelines.{ctx['pipeline_name']}")
-    get_model = import_symbol(f"myproj.models.{ctx['model_name']}", "get")
+    pl = import_symbol(f"pipelines.{ctx['pipeline_name']}")
+    get_model = import_symbol(f"models.{ctx['model_name']}", "get")
 
     X, y = pl.load_data(ctx)
     estimator = pl.build(get_model())
@@ -62,14 +63,12 @@ def main():
         Xtr, Xte, ytr, yte = train_test_split(
             X, y, test_size=float(ctx["test_size"]), random_state=int(ctx["seed"])
         )
-
         estimator.fit(Xtr, ytr)
         y_pred = estimator.predict(Xte)
         mae = float(mean_absolute_error(yte, y_pred))
-        mse = float(mean_squared_error(yte, y_pred))
+        mse = float(mean_squared_error(yte, y_pred))  # no 'squared' kwarg for compat
         rmse = float(mse ** 0.5)
         r2 = float(r2_score(yte, y_pred))
-
     dur = time.time() - start
 
     print(json.dumps({

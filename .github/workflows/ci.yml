@@ -7,7 +7,6 @@ on:
 env:
   MODEL: ${{ vars.MODEL }}
   PIPELINE: ${{ vars.PIPELINE }}
-  DATA_PATH: ${{ vars.DATA_PATH }}
   ROWS: ${{ vars.ROWS }}
   TEST_SIZE: ${{ vars.TEST_SIZE }}
   SEED: ${{ vars.SEED }}
@@ -28,7 +27,6 @@ jobs:
         run: |
           echo "MODEL=${MODEL:-random_forest}" >> $GITHUB_ENV
           echo "PIPELINE=${PIPELINE:-pipeline_taxi_duration}" >> $GITHUB_ENV
-          echo "DATA_PATH=${DATA_PATH:-data/smoke_sample.parquet}" >> $GITHUB_ENV
           echo "ROWS=${ROWS:-256}" >> $GITHUB_ENV
           echo "TEST_SIZE=${TEST_SIZE:-0.2}" >> $GITHUB_ENV
           echo "SEED=${SEED:-123}" >> $GITHUB_ENV
@@ -61,7 +59,6 @@ jobs:
           docker run --rm \
             -e MODEL="${MODEL}" \
             -e PIPELINE="${PIPELINE}" \
-            -e DATA_PATH="${DATA_PATH}" \
             -e ROWS="${ROWS}" \
             -e TEST_SIZE="${TEST_SIZE}" \
             -e SEED="${SEED}" \
