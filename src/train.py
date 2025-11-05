@@ -43,8 +43,6 @@ def build_ctx() -> Dict[str, Any]:
         "rows": getenv("ROWS", 256, int),
         "test_size": getenv("TEST_SIZE", 0.2, float),
         "seed": getenv("SEED", 123, int),
-        # Optional override; pipeline has its own module-relative default
-        "data_path": os.getenv("DATA_PATH", ""),
     }
 
 def main():

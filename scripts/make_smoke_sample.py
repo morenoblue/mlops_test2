@@ -6,9 +6,9 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-BASE_PATH = Path(__file__).resolve()
-SRC_SOURCE_PATH = BASE_PATH.parents[2] / "yellow_tripdata_2010-01.parquet"
-OUT_PATH = BASE_PATH.parents[1] / "data" / "smoke_sample.parquet"
+BASE_PATH = Path(__file__).resolve().parents[1]
+SRC_SOURCE_PATH = BASE_PATH / "yellow_tripdata_2010-01.parquet"
+OUT_PATH = BASE_PATH / "src" / "data" / "smoke_sample.parquet"
 ROWS = 256      
 SEED = 0       
 RAW_REQUIRED = [

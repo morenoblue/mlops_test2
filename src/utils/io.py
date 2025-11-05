@@ -1,7 +1,7 @@
 import os, glob
 import pandas as pd
 
-def read_parquet_first(path: str, nrows: int | None = None) -> pd.DataFrame:
+def read_parquet(path: str, nrows: int | None = None) -> pd.DataFrame:
     if os.path.isdir(path):
         files = sorted(glob.glob(os.path.join(path, "*.parquet")))
         if not files:
