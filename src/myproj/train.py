@@ -43,7 +43,7 @@ def build_ctx() -> Dict[str, Any]:
         "rows": getenv("ROWS", 256, int),
         "test_size": getenv("TEST_SIZE", 0.2, float),
         "seed": getenv("SEED", 123, int),
-        "data_path": os.getenv("DATA_PATH", "data/smoke_sample.parquet"),
+        "data_path": os.getenv("DATA_PATH", "myproj/data/smoke_sample.parquet"),
     }
 
 def main():
@@ -62,11 +62,14 @@ def main():
         Xtr, Xte, ytr, yte = train_test_split(
             X, y, test_size=float(ctx["test_size"]), random_state=int(ctx["seed"])
         )
+
         estimator.fit(Xtr, ytr)
         y_pred = estimator.predict(Xte)
         mae = float(mean_absolute_error(yte, y_pred))
-        rmse = float(mean_squared_error(yte, y_pred, squared=False))
+        mse = float(mean_squared_error(yte, y_pred))
+        rmse = float(mse ** 0.5)
         r2 = float(r2_score(yte, y_pred))
+
     dur = time.time() - start
 
     print(json.dumps({
